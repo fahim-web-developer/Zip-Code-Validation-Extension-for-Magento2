@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Fahim Software.
+ *
+ * @category  Fahim
+ * @package   Fahim_ZipCodeValidator
+ * @author    Fahim
+ * @copyright Copyright (c) Fahim Software Private Limited (https://Fahim.com)
+ * @license   https://store.Fahim.com/license.html
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="zipcodevalidator_region" resource="default" engine="innodb" comment="ZipCodeValidator Region Table">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true"
+                comment="Region Id"/>
+        <column xsi:type="varchar" name="region_name" nullable="false" length="255" comment="Region Name"/>
+        <column xsi:type="smallint" name="status" unsigned="true" nullable="false"
+                identity="false" default="1" comment="Region Status"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Creation Time"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Update Time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+
+    <table name="zipcodevalidator_zipcode" resource="default" engine="innodb" comment="ZipCodeValidator Zipcode Table">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true"
+                comment="Zipcode Id"/>
+        <column xsi:type="int" name="region_id" unsigned="true" nullable="false"
+                identity="false" default="0" comment="Region Id"/>
+        <column xsi:type="varchar" name="region_zipcode_from" nullable="false" length="255" comment="Zipcode From"/>
+        <column xsi:type="varchar" name="region_zipcode_to" nullable="false" length="255" comment="Zipcode To"/>
+        <column xsi:type="int" name="serial_no" unsigned="true" nullable="false"
+                identity="false" comment="Serial No."/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Creation Time"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Update Time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="ZIPCODEVALIDATOR_ZIPCODE_REGION_ID_ZIPCODEVALIDATOR_REGION_ID"
+                    table="zipcodevalidator_zipcode" column="region_id" referenceTable="zipcodevalidator_region"
+                    referenceColumn="id" onDelete="CASCADE"/>
+    </table>
+</schema>

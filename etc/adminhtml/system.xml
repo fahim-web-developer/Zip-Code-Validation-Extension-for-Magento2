@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Fahim Software.
+ *
+ * @category  Fahim
+ * @package   Fahim_ZipCodeValidator
+ * @author    Fahim
+ * @copyright Copyright (c) Fahim Software Private Limited (https://Fahim.com)
+ * @license   https://store.Fahim.com/license.html
+ */
+ -->
+ <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+ 	<system>
+        <tab id="fahim" translate="label" sortOrder="10">
+            <label>Fahim Extension</label>
+        </tab>
+        <section id="zipcodevalidator" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+        	<label>Zip Code Validator </label>
+            <tab>fahim</tab>
+            <resource>Fahim_ZipCodeValidator::config_zipcodevalidator</resource>
+            <group id="wk_zipcodevalidatorstatus" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Zip Code Validator Configuration</label>
+                <field id="wk_zipcodevalidatorstatus" translate="label comment" sortOrder="1" type="select" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable Zip Code Validator Module</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="applyto" translate="label comment" sortOrder="1" type="select" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <source_model>Fahim\ZipCodeValidator\Model\Config\Source\Apply</source_model>
+                    <label> Select Zip Code Validator Availability</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="wk_zipcodevalidatorstatus">1</field>
+                    </depends>
+                </field>
+                <field id="regions" translate="label comment" sortOrder="1" type="multiselect" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <source_model>Fahim\ZipCodeValidator\Model\Config\Source\RegionOptions</source_model>
+                    <label>Select the zipcode Regions</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="applyto">1</field>
+                        <field id="wk_zipcodevalidatorstatus">1</field>
+                    </depends>
+                </field>
+                <field id="message" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Zipcode for Message</label>
+                    <depends>
+                        <field id="wk_zipcodevalidatorstatus">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

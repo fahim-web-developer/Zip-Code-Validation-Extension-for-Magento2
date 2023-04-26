@@ -1,0 +1,29 @@
+{
+    "zipcodevalidator_region": {
+        "column": {
+            "id": true,
+            "region_name": true,
+            "status": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "zipcodevalidator_zipcode": {
+        "column": {
+            "id": true,
+            "region_id": true,
+            "region_zipcode_from": true,
+            "region_zipcode_to": true,
+            "serial_no": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "ZIPCODEVALIDATOR_ZIPCODE_REGION_ID_ZIPCODEVALIDATOR_REGION_ID": true
+        }
+    }
+}

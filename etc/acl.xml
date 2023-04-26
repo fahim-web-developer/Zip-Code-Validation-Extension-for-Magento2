@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Fahim Software.
+ * @category Fahim
+ * @package Fahim_ZipCodeValidator
+ * @author Fahim
+ * @copyright Copyright (c) Fahim Software Private Limited (https://Fahim.com)
+ * @license https://store.Fahim.com/license.html
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Fahim_ZipCodeValidator::zipcodevalidator" title="Zipcode Validator Management" sortOrder="10" >
+                    <resource id="Fahim_ZipCodeValidator::region" title="Manage Region" sortOrder="10" />
+                    <resource id="Fahim_ZipCodeValidator::zipcode" title="Manage Region Zipcodes" sortOrder="11" />
+                </resource>
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Fahim_ZipCodeValidator::config_zipcodevalidator" title="ZipCodeValidator Configuration Section" sortOrder="50" />
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

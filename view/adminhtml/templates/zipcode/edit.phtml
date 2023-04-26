@@ -1,0 +1,22 @@
+<?php
+/**
+ * Fahim Software.
+ *
+ * @category  Fahim
+ * @package   Fahim_ZipCodeValidator
+ * @author    Fahim
+ * @copyright Copyright (c) Fahim Software Private Limited (https://Fahim.com)
+ * @license   https://store.Fahim.com/license.html
+ */
+?>
+<?php $regionId = $block->getRequest()->getParam('region_id');
+?>
+<input id="zipcode_region_id" type="hidden" name="region_id" value="<?= $block->escapeHtml($regionId) ?>" />
+<script>
+    require([
+        'jquery',
+        'domReady!'
+    ], function ($) {
+        $("#zipcode_base_fieldset").after($("#zipcode_region_id"));
+    });
+</script>

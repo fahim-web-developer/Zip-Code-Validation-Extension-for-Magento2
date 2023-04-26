@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * ZipCodeValidator adminhtml routes.
+ * @category Fahim
+ * @package Fahim_ZipCodeValidator
+ * @author Fahim
+ * @copyright Copyright (c) Fahim Software Private Limited (https://Fahim.com)
+ * @license https://store.Fahim.com/license.html
+ */ 
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="admin">
+        <route id="zipcodevalidator" frontName="zipcodevalidator">
+            <module name="Fahim_ZipCodeValidator"/>
+        </route>
+    </router>
+</config>

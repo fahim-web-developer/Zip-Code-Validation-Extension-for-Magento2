@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * ZipCodeValidator adminhtml routes.
+ * @category Fahim
+ * @package Fahim_ZipCodeValidator
+ * @author Fahim
+ * @copyright Copyright (c) Fahim Software Private Limited (https://Fahim.com)
+ * @license https://store.Fahim.com/license.html
+ */ 
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Fahim_ZipCodeValidator::zipcodevalidator" title="Zipcode Validator Extension" module="Fahim_ZipCodeValidator" sortOrder="11" resource="Fahim_ZipCodeValidator::zipcodevalidator"/>
+        <add id="Fahim_ZipCodeValidator::region" title="Zipcode collection Grid" module="Fahim_ZipCodeValidator" sortOrder="1" parent="Fahim_ZipCodeValidator::zipcodevalidator" action="zipcodevalidator/region/" resource="Fahim_ZipCodeValidator::region"/> 
+          <add id="Fahim_ZipCodeValidator::add_row12" title="Zipcode Configuration" module="Fahim_ZipCodeValidator" sortOrder="2" parent="Fahim_ZipCodeValidator::zipcodevalidator" action="admin/system_config/edit/section/zipcodevalidator" resource="Fahim_ZipCodeValidator::add_row12"/>           
+    </menu>
+</config>

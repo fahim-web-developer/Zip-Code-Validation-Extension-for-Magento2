@@ -1,0 +1,142 @@
+<?php
+
+namespace Fahim\ZipCodeValidator\Controller\Zipcode;
+
+use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Stdlib\CookieManagerInterface;
+
+/**
+ * Zipcode Result class
+ */
+class Result extends Action
+{
+    /**
+     * @var \Fahim\ZipCodeValidator\Model\ResourceModel\Zipcode\CollectionFactory
+     */
+    private $zipcodeCollection;
+
+    /**
+     * CookieManager
+     *
+     * @var CookieManagerInterface
+     */
+    private $cookieManager;
+
+    /**
+     * @var Fahim\ZipCodeValidator\Helper
+     */
+    private $helper;
+
+    /**
+     * @param Context $context
+     * @param CookieManagerInterface $cookieManager
+     * @param \Magento\Customer\Model\Session $session
+     * @param \Fahim\ZipCodeValidator\Model\ResourceModel\Zipcode\CollectionFactory $zipcodeCollection
+     * @param \Fahim\ZipCodeValidator\Helper\Data $helper
+     */
+    public function __construct(
+        Context $context,
+        CookieManagerInterface $cookieManager,
+        \Magento\Customer\Model\Session $session,
+        \Fahim\ZipCodeValidator\Model\ResourceModel\Zipcode\CollectionFactory $zipcodeCollection,
+        \Fahim\ZipCodeValidator\Helper\Data $helper
+    ) {
+        $this->zipcodeCollection = $zipcodeCollection;
+        $this->cookieManager = $cookieManager;
+        $this->session = $session;
+        $this->helper = $helper;
+        parent::__construct($context);
+    }
+
+    /**
+     * @return json
+     */
+    public function execute()
+    {
+        $data = [];
+        $data['addesses'] = '';
+        try {
+            $address = $this->getAllAddressOfCustomer();
+            $params = $this->getRequest()->getParams();
+
+            if ($address) {
+                $data['addesses'] = $address;
+            }
+
+            if (!empty($params['zip']) && !empty($params['productId'])) {
+                $zip = $params['zip'];
+                $productId = $params['productId'];
+                $cookie = $this->cookieManager->getCookie('mpzip');
+
+                $regionIds = $this->helper->validateZipCode($productId);
+                if (!empty($regionIds)) {
+                    if (is_numeric($zip)) {
+                        $zip = (int)$zip;
+                        $model = $this->zipcodeCollection->create()
+                            ->addFieldToFilter('region_zipcode_from', ['lteq' => $zip])
+                            ->addFieldToFilter('region_zipcode_to', ['gteq' => $zip])
+                            ->addFieldToFilter('region_id', ['in', $regionIds]);
+                    } else {
+                        $model = $this->zipcodeCollection->create()
+                            ->addFieldToFilter('region_zipcode_from', ['eq' => $zip])
+                            ->addFieldToFilter('region_zipcode_to', ['eq' => $zip])
+                            ->addFieldToFilter('region_id', ['in', $regionIds]);
+                    }
+                    
+                    if ($model->getSize()) {
+                        $data['product_zipcode'] = $zip;
+                        $data['product_id'] = $productId;
+                    }
+                }
+                
+                if ($cookie) {
+                    $data['cookieZip'] = $cookie;
+                    $cookiezip = trim($zip).','.$data['cookieZip'];
+                } else {
+                    $cookiezip = trim($zip);
+                }
+
+                $this->cookieManager->setPublicCookie('mpzip', $cookiezip);
+            }
+        } catch (\Exception $e) {
+            $this->helper->logDataInLogger(
+                "Controller_Zipcode_Result_execute Exception : ".$e->getMessage()
+            );
+        }
+        $resultJson = $this->resultFactory->create(ResultFactory::TYPE_JSON);
+        $resultJson->setData($data);
+        return $resultJson;
+    }
+
+    /**
+     * Get all address of logged Customer
+     *
+     * @return array
+     */
+    private function getAllAddressOfCustomer()
+    {
+        $customerAddress = [];
+        try {
+            if ($this->session->getCustomerId()) {
+                $customer = $this->session->getCustomer();
+                foreach ($customer->getAddresses() as $address) {
+                    $addr = $address->toArray();
+                    $postcode = $addr['postcode'];
+                    $street = $addr['street'];
+                    $city = $addr['city'];
+                    if ($street && $city && $postcode) {
+                        $custAddr = $postcode.' '.$street.' '.$city;
+                    }
+                    $customerAddress[] = substr($custAddr, 0, 20).'...';
+                }
+            }
+        } catch (\Exception $e) {
+            $this->helper->logDataInLogger(
+                "Controller_Zipcode_Result_getAllAddressOfCustomer Exception : ".$e->getMessage()
+            );
+        }
+        return $customerAddress;
+    }
+}
